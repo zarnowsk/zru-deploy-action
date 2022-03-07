@@ -4838,7 +4838,7 @@ const headers = {
 };
 const parameters = {
 	solutionId: 8,
-	parameters: { name: "actions-test-2" },
+	parameters: { name: "actions-test" },
 };
 
 const deploy = async () => {
