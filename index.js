@@ -1,8 +1,9 @@
 import axios from "axios";
+const core = require("@actions/core");
 
-const base_url = "https://api.zrutech.ca/builder/instance/api";
+const base_url = "https://api.dev.zrutech.ca/builder/instance/api";
 const headers = {
-	Authorization: "X",
+	Authorization: core.getInput("api_key", { required: true }),
 	"Content-Type": "application/json",
 };
 const parameters = {};
