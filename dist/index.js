@@ -4847,10 +4847,8 @@ const deploy = async () => {
 		const instanceDeploy = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`${base_url}/deploy`, parameters, {
 			headers,
 		});
-		console.log(instanceDeploy.status);
-		console.log(typeof instanceDeploy.status);
 
-		if (instanceDeploy.status !== 200 || instanceDeploy.status !== 201) {
+		if (instanceDeploy.status !== 200 && instanceDeploy.status !== 201) {
 			console.error("Something went wrong...");
 			console.error(instanceDeploy.data);
 			return;
