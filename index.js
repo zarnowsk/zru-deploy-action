@@ -2,11 +2,16 @@ import axios from "axios";
 const core = require("@actions/core");
 
 const base_url = "https://api.dev.zrutech.ca/builder/instance/api";
+const api_key = core.getInput("api_key", { required: true });
+console.log(api_key);
 const headers = {
-	Authorization: core.getInput("api_key", { required: true }),
+	Authorization: api_key,
 	"Content-Type": "application/json",
 };
-const parameters = {};
+const parameters = {
+	solutionId: 8,
+	parameters: { name: "actionsTest" },
+};
 
 const deploy = async () => {
 	// Create the instance in the platform first
