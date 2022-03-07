@@ -8,7 +8,7 @@ const headers = {
 };
 const parameters = {};
 
-const deploy = () => {
+const deploy = async () => {
 	// Create the instance in the platform first
 	const instanceDeploy = await axios.post(`${base_url}/deploy`, parameters, {
 		headers,
@@ -25,7 +25,7 @@ const deploy = () => {
 		let i = 0,
 			keepGoing = true;
 		while (keepGoing) {
-			setTimeout(() => {
+			setTimeout(async () => {
 				const deploymentDetails = await axios.get(
 					`${base_url}/details/${instanceId}`,
 					{ headers }
