@@ -1,0 +1,9 @@
+name: "ZRU Deploy Action"
+description: "Deploys instances via the ZRU API"
+inputs:
+  # owner:
+  #   description: 'The owner of the repository'
+  #   required: true
+runs:
+  using: "node16"
+  main: "index.js"
