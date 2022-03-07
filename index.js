@@ -9,8 +9,10 @@ const headers = {
 };
 const parameters = {
 	solutionId: 8,
-	parameters: { name: "actions-test" },
+	parameters: { name: "actions-test-2" },
 };
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const deploy = async () => {
 	try {
@@ -30,27 +32,26 @@ const deploy = async () => {
 			let i = 0,
 				keepGoing = true;
 			while (keepGoing) {
-				setTimeout(async () => {
-					const deploymentDetails = await axios.get(
-						`${base_url}/details/${instanceId}`,
-						{ headers }
-					);
-					const state = deploymentDetails.data.metadata.status;
-					console.log(`Current state: ${state}`);
+				const deploymentDetails = await axios.get(
+					`${base_url}/details/${instanceId}`,
+					{ headers }
+				);
+				const state = deploymentDetails.data.metadata.status;
+				console.log(`Current state: ${state}`);
 
-					if (i > 100) {
-						console.error("Timing out after ~500 seconds.");
-						return;
-					}
+				if (i > 100) {
+					console.error("Timing out after ~500 seconds.");
+					return;
+				}
 
-					if (state.toUpperCase() === "DEPLOYED") {
-						console.log("Deployed successfully!");
-						console.log(deploymentDetails.metadata.output);
-						return;
-					}
+				if (state.toUpperCase() === "DEPLOYED") {
+					console.log("Deployed successfully!");
+					console.log(deploymentDetails.metadata.output);
+					return;
+				}
 
-					i++;
-				}, 10000);
+				await sleep(10000);
+				i++;
 			}
 		}
 	} catch (e) {
