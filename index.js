@@ -10,7 +10,7 @@ const headers = {
 };
 const parameters = {
 	solutionId: 8,
-	parameters: { name: "actionsTest" },
+	parameters: { name: "actions-test" },
 };
 
 const deploy = async () => {
