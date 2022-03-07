@@ -14,44 +14,48 @@ const parameters = {
 };
 
 const deploy = async () => {
-	// Create the instance in the platform first
-	const instanceDeploy = await axios.post(`${base_url}/deploy`, parameters, {
-		headers,
-	});
+	try {
+		// Create the instance in the platform first
+		const instanceDeploy = await axios.post(`${base_url}/deploy`, parameters, {
+			headers,
+		});
 
-	if (instanceDeploy.status !== 200 || instanceDeploy.status !== 201) {
-		console.error("Something went wrong...");
-		console.error(instanceDeploy.data);
-		return;
-	} else {
-		console.log("Started deployment...");
-		const instanceId = instanceDeploy.data.instance.id;
+		if (instanceDeploy.status !== 200 || instanceDeploy.status !== 201) {
+			console.error("Something went wrong...");
+			console.error(instanceDeploy.data);
+			return;
+		} else {
+			console.log("Started deployment...");
+			const instanceId = instanceDeploy.data.instance.id;
 
-		let i = 0,
-			keepGoing = true;
-		while (keepGoing) {
-			setTimeout(async () => {
-				const deploymentDetails = await axios.get(
-					`${base_url}/details/${instanceId}`,
-					{ headers }
-				);
-				const state = deploymentDetails.data.metadata.status;
-				console.log(`Current state: ${state}`);
+			let i = 0,
+				keepGoing = true;
+			while (keepGoing) {
+				setTimeout(async () => {
+					const deploymentDetails = await axios.get(
+						`${base_url}/details/${instanceId}`,
+						{ headers }
+					);
+					const state = deploymentDetails.data.metadata.status;
+					console.log(`Current state: ${state}`);
 
-				if (i > 100) {
-					console.error("Timing out after ~500 seconds.");
-					return;
-				}
+					if (i > 100) {
+						console.error("Timing out after ~500 seconds.");
+						return;
+					}
 
-				if (state.toUpperCase() === "DEPLOYED") {
-					console.log("Deployed successfully!");
-					console.log(deploymentDetails.metadata.output);
-					return;
-				}
+					if (state.toUpperCase() === "DEPLOYED") {
+						console.log("Deployed successfully!");
+						console.log(deploymentDetails.metadata.output);
+						return;
+					}
 
-				i++;
-			}, 10000);
+					i++;
+				}, 10000);
+			}
 		}
+	} catch (e) {
+		console.error(e);
 	}
 };
 
