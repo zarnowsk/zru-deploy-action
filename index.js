@@ -3,14 +3,13 @@ const core = require("@actions/core");
 
 const base_url = "https://api.dev.zrutech.ca/builder/instance/api";
 const api_key = core.getInput("api_key", { required: true });
-console.log(api_key);
 const headers = {
 	Authorization: api_key,
 	"Content-Type": "application/json",
 };
 const parameters = {
 	solutionId: 8,
-	parameters: { name: "actions-test" },
+	parameters: { name: "actions-test-2" },
 };
 
 const deploy = async () => {
@@ -19,6 +18,8 @@ const deploy = async () => {
 		const instanceDeploy = await axios.post(`${base_url}/deploy`, parameters, {
 			headers,
 		});
+		console.log(instanceDeploy.status);
+		console.log(typeof instanceDeploy.status);
 
 		if (instanceDeploy.status !== 200 || instanceDeploy.status !== 201) {
 			console.error("Something went wrong...");
