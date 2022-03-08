@@ -11,7 +11,7 @@ const parameters = {
 	solutionId: core.getInput("solution_id", { required: true }),
 	parameters: JSON.parse(core.getInput("parameters", { required: true })),
 };
-console.log(JSON.parse(core.getInput("parameters", { required: true })));
+
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const deploy = async () => {
@@ -42,12 +42,20 @@ const deploy = async () => {
 
 					if (i > 100) {
 						console.error("Timing out after ~500 seconds.");
+						keepGoing = false;
 						return;
 					}
 
 					if (state.toUpperCase() === "DEPLOYED") {
 						console.log("Deployed successfully!");
-						console.log(deploymentDetails.metadata.output);
+						console.log("Output:");
+
+						Object.entries(deploymentDetails.data.metadata.output).forEach(
+							([key, value]) => {
+								console.log(`${key}: ${value}`);
+							}
+						);
+						keepGoing = false;
 						return;
 					}
 				} catch (e) {
