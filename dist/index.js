@@ -4838,9 +4838,9 @@ const headers = {
 };
 const parameters = {
 	solutionId: core.getInput("solution_id", { required: true }),
-	parameters: core.getInput("parameters", { required: true }),
+	parameters: JSON.parse(core.getInput("parameters", { required: true })),
 };
-
+console.log(JSON.parse(core.getInput("parameters", { required: true })));
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const deploy = async () => {
