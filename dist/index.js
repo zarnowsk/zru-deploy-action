@@ -4837,8 +4837,8 @@ const headers = {
 	"Content-Type": "application/json",
 };
 const parameters = {
-	solutionId: 8,
-	parameters: { name: "actions-test-3" },
+	solutionId: core.getInput("solution_id", { required: true }),
+	parameters: core.getInput("parameters", { required: true }),
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

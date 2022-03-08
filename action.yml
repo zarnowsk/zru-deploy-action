@@ -4,6 +4,12 @@ inputs:
   api_key:
     description: "Authorization API KEY"
     required: true
+  solution_id:
+    description: "ID of the solution to deploy"
+    required: true
+  parameters:
+    description: "Deployment parameters eg. Instance name"
+    required: true
 runs:
   using: "node16"
   main: "dist/index.js"
