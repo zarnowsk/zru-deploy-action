@@ -4863,7 +4863,7 @@ const deploy = async () => {
 			while (keepGoing) {
 				try {
 					const deploymentDetails = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(
-						`${base_url}/details/${instanceId}`,
+						`${base_url}/details/?instanceId=${instanceId}`,
 						{ headers }
 					);
 					const state = deploymentDetails.data.metadata.status;
