@@ -4845,7 +4845,8 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const deploy = async () => {
 	try {
-		console.log(core.getMultilineInput("parameters", { required: true }));
+		const params = core.getMultilineInput("parameters", { required: true });
+		console.log(params[0].split(" "));
 		// Create the instance in the platform first
 		// const instanceDeploy = await axios.post(`${base_url}/deploy`, parameters, {
 		// 	headers,
