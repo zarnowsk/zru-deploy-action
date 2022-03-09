@@ -1278,7 +1278,7 @@ exports.checkBypass = checkBypass;
 /***/ 1540:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-/* unused reexport */ __nccwpck_require__(1329);
+module.exports = __nccwpck_require__(1329);
 
 /***/ }),
 
@@ -4856,74 +4856,66 @@ const extractInputParameters = () => {
 
 const parameters = {
 	solutionId: core.getInput("solution_id", { required: true }),
-	parameters: extractInputParameters(),
+	parameters: JSON.parse(core.getInput("parameters", { required: true })),
 };
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const deploy = async () => {
 	try {
-		console.log(core.getInput("parameters", { required: true }));
-		console.log(typeof core.getInput("parameters", { required: true }));
-		console.log(
-			JSON.parse(
-				JSON.stringify(core.getInput("parameters", { required: true }))
-			)
-		);
-		console.log(JSON.parse(core.getInput("parameters", { required: true })));
-		// // Create the instance in the platform first
-		// const instanceDeploy = await axios.post(`${base_url}/deploy`, parameters, {
-		// 	headers,
-		// });
+		// Create the instance in the platform first
+		const instanceDeploy = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`${base_url}/deploy`, parameters, {
+			headers,
+		});
 
-		// if (instanceDeploy.status !== 200 && instanceDeploy.status !== 201) {
-		// 	console.error("Something went wrong...");
-		// 	console.error(instanceDeploy.data);
-		// 	return;
-		// } else {
-		// 	console.log("Started deployment...");
-		// 	const instanceId = instanceDeploy.data.instance.id;
+		if (instanceDeploy.status !== 200 && instanceDeploy.status !== 201) {
+			console.error("Something went wrong...");
+			console.error(instanceDeploy.data);
+			return;
+		} else {
+			console.log("Started deployment...");
+			const instanceId = instanceDeploy.data.instance.id;
 
-		// 	let i = 0,
-		// 		keepGoing = true;
-		// 	while (keepGoing) {
-		// 		try {
-		// 			const deploymentDetails = await axios.get(
-		// 				`${base_url}/details/?instanceId=${instanceId}`,
-		// 				{ headers }
-		// 			);
-		// 			const state = deploymentDetails.data.metadata.status;
-		// 			console.log(`Current state: ${state}`);
+			let i = 0,
+				keepGoing = true;
+			while (keepGoing) {
+				try {
+					const deploymentDetails = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(
+						`${base_url}/details/?instanceId=${instanceId}`,
+						{ headers }
+					);
+					const state = deploymentDetails.data.metadata.status;
+					console.log(`Current state: ${state}`);
 
-		// 			if (i > 100) {
-		// 				console.error("Timing out after ~500 seconds.");
-		// 				core.setOutput(
-		// 					"deployment_output",
-		// 					"Deployment timed out after ~500 seconds."
-		// 				);
+					if (i > 100) {
+						console.error("Timing out after ~500 seconds.");
+						core.setOutput(
+							"deployment_output",
+							"Deployment timed out after ~500 seconds."
+						);
 
-		// 				keepGoing = false;
-		// 				return;
-		// 			}
+						keepGoing = false;
+						return;
+					}
 
-		// 			if (state.toUpperCase() === "DEPLOYED") {
-		// 				console.log("Deployed successfully!");
-		// 				core.setOutput(
-		// 					"deployment_output",
-		// 					JSON.stringify(deploymentDetails.data.metadata.output)
-		// 				);
+					if (state.toUpperCase() === "DEPLOYED") {
+						console.log("Deployed successfully!");
+						core.setOutput(
+							"deployment_output",
+							JSON.stringify(deploymentDetails.data.metadata.output)
+						);
 
-		// 				keepGoing = false;
-		// 				return;
-		// 			}
-		// 		} catch (e) {
-		// 			console.error(e);
-		// 		}
+						keepGoing = false;
+						return;
+					}
+				} catch (e) {
+					console.error(e);
+				}
 
-		// 		await sleep(10000);
-		// 		i++;
-		// 	}
-		// }
+				await sleep(10000);
+				i++;
+			}
+		}
 	} catch (e) {
 		console.error(e);
 	}
