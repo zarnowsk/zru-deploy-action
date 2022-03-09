@@ -4864,6 +4864,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const deploy = async () => {
 	try {
 		console.log(core.getInput("parameters", { required: true }));
+		console.log(typeof core.getInput("parameters", { required: true }));
 		console.log(JSON.parse(core.getInput("parameters", { required: true })));
 		// // Create the instance in the platform first
 		// const instanceDeploy = await axios.post(`${base_url}/deploy`, parameters, {
