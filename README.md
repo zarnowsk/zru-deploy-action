@@ -13,11 +13,13 @@ This action deploys an instance via the ZRU platform and prints the deployment o
 
 ### `parameters`
 **Required** Deployment parameters. **Must** be written in the following format:
+```
     parameters: >           **<-- greater-than character to signify multiline input**
         {                   **<-- curly braces for JSON input**
             "name": "actions-test-8",       **<-- each parameter as JSON key:value pair**
             "nextParam": "param-data"
         }
+```
 
 
 ## Outputs
@@ -28,23 +30,26 @@ The output from the deployment.
 
 ## Example usage
 
+```
 deploy-zru:
-    runs-on: ubuntu-latest
-    name: Attempts to deploy via ZRU
-    steps:
-      - name: Deploy
-        id: zrudeploy
-        uses: zarnowsk/zru-deploy-action@main
-        with:
-          api_key: QWETQEJfajfhaRQWIURYQUWajfakjsfh
-          solution_id: 1
-          parameters: >
-            {
-              "name": "actions-test-1", 
-              "nextParam": "param-data"
-            }
-      - name: Log deployment output
-        run: echo "Deployment output ${{ steps.zrudeploy.outputs.deployment_output }}"
+  runs-on: ubuntu-latest
+  name: Attempts to deploy via ZRU
+  steps:
+    - name: Deploy
+      id: zrudeploy
+      uses: zarnowsk/zru-deploy-action@main
+      with:
+        api_key: QWETQEJfajfhaRQWIURYQUWajfakjsfh
+        solution_id: 1
+        parameters: >
+          {
+            "name": "actions-test-1", 
+            "nextParam": "param-data"
+          }
+    - name: Log deployment output
+      run: echo "Deployment output ${{ steps.zrudeploy.outputs.deployment_output }}"
+```
+
 
 
 ## Contributing/development
