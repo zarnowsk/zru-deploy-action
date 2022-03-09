@@ -4830,7 +4830,7 @@ __nccwpck_require__.r(__webpack_exports__);
 
 const core = __nccwpck_require__(7358);
 
-const base_url =  `${core.getInput("api_endpoint", { required: false })}/builder/instance/api/`;
+const base_url =  `${core.getInput("api_endpoint", { required: false })}/builder/instance/api`;
 const api_key = core.getInput("api_key", { required: true });
 const headers = {
 	Authorization: api_key,
