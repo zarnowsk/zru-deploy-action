@@ -4846,7 +4846,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const deploy = async () => {
 	try {
 		const paramInput = core.getMultilineInput("parameters", { required: true });
-		const rawParams = params[0].split(" ");
+		const rawParams = paramInput[0].split(" ");
 		const params = {};
 		rawParams.forEach((param) => {
 			const splitParam = param.split(":");
