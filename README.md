@@ -14,9 +14,9 @@ This action deploys an instance via the ZRU platform and prints the deployment o
 ### `parameters`
 **Required** Deployment parameters. **Must** be written in the following format:
 ```
-    parameters: >           **<-- greater-than character to signify multiline input**
-        {                   **<-- curly braces for JSON input**
-            "name": "actions-test-8",       **<-- each parameter as JSON key:value pair**
+    parameters: >           <-- greater-than character to signify multiline input
+        {                   <-- curly braces for JSON input
+            "name": "actions-test-8",       <-- each parameter as JSON key:value pair
             "nextParam": "param-data"
         }
 ```
