@@ -8,23 +8,6 @@ const headers = {
 	"Content-Type": "application/json",
 };
 
-const extractInputParameters = () => {
-	/* Parameters are input as multiline YAML string in the following format:
-	   parameters: 
-           name:actions-name
-           anotherParam:test-test-test
-		This function will create a JS object out of raw input.
-	*/
-	const paramInput = core.getMultilineInput("parameters", { required: true });
-	const rawParams = paramInput[0].split(" ");
-	const params = {};
-	rawParams.forEach((param) => {
-		const splitParam = param.split(":");
-		params[`${splitParam[0]}`] = splitParam[1];
-	});
-	return params;
-};
-
 const parameters = {
 	solutionId: core.getInput("solution_id", { required: true }),
 	parameters: JSON.parse(core.getInput("parameters", { required: true })),
