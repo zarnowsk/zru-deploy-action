@@ -37,7 +37,7 @@ deploy-zru:
   steps:
     - name: Deploy
       id: zrudeploy
-      uses: zarnowsk/zru-deploy-action@main
+      uses: zerorampup/zru-deploy-action@main
       with:
         api_key: QWETQEJfajfhaRQWIURYQUWajfakjsfh
         solution_id: 1
