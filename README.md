@@ -21,6 +21,9 @@ This action deploys an instance via the ZRU platform and prints the deployment o
         }
 ```
 
+### `api_endpoint`
+URL of the API. By default, Instances will be deployed to production environment.
+
 
 ## Outputs
 

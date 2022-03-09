@@ -10,6 +10,10 @@ inputs:
   parameters:
     description: "Deployment parameters eg. Instance name"
     required: true
+  api_endpoint:
+    description: "API URL"
+    required: false
+    default: "https://api.zrutech.ca/builder/instance/api/"
 outputs:
   deployment_output:
     description: "The output from deployed instance"

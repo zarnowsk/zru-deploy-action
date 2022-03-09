@@ -1,7 +1,7 @@
 import axios from "axios";
 const core = require("@actions/core");
 
-const base_url = "https://api.dev.zrutech.ca/builder/instance/api";
+const base_url =  core.getInput("api_endpoint", { required: false });
 const api_key = core.getInput("api_key", { required: true });
 const headers = {
 	Authorization: api_key,
