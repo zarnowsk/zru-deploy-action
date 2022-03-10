@@ -29,6 +29,7 @@ const deploy = async () => {
 		} else {
 			console.log("Started deployment...");
 			const instanceId = instanceDeploy.data.instance.id;
+			await sleep(10000);
 
 			let i = 0,
 				keepGoing = true;
