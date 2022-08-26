@@ -1,7 +1,9 @@
 import axios from "axios";
 const core = require("@actions/core");
 
-const base_url =  `${core.getInput("api_endpoint", { required: false })}/builder/instance/api`;
+const base_url = `${core.getInput("api_endpoint", {
+	required: false,
+})}/builder/instance/api`;
 const api_key = core.getInput("api_key", { required: true });
 const headers = {
 	Authorization: api_key,
@@ -23,9 +25,9 @@ const deploy = async () => {
 		});
 
 		if (instanceDeploy.status !== 200 && instanceDeploy.status !== 201) {
-			console.error("Something went wrong...");
-			console.error(instanceDeploy.data);
-			return;
+			console.log("Something went wrong...");
+			console.log(instanceDeploy.data);
+			throw new Error("Instance deploy status not in 2xx");
 		} else {
 			console.log("Started deployment...");
 			const instanceId = instanceDeploy.data.instance.id;
@@ -64,7 +66,9 @@ const deploy = async () => {
 						return;
 					}
 				} catch (e) {
-					console.error(e);
+					console.log("Something went wrong...");
+					console.log(e);
+					throw new Error("Instance deployment failed while deploying");
 				}
 
 				await sleep(10000);
@@ -72,7 +76,10 @@ const deploy = async () => {
 			}
 		}
 	} catch (e) {
-		console.error(e);
+		core.error("Master failure");
+		console.log(e);
+
+		core.setFailed(`Deployment failed with error: ${e}`);
 	}
 };
 
