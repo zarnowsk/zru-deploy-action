@@ -4,6 +4,7 @@ const core = require("@actions/core");
 const base_url = `${core.getInput("api_endpoint", {
 	required: false,
 })}/builder/instance/api`;
+const timeout = core.getInput("timeout", { required: false });
 const api_key = core.getInput("api_key", { required: true });
 const headers = {
 	Authorization: api_key,
@@ -38,21 +39,19 @@ const deploy = async () => {
 			while (keepGoing) {
 				try {
 					const deploymentDetails = await axios.get(
-						`${base_url}/details/?instanceId=${instanceId}`,
+						`${base_url}/details?instanceId=${instanceId}`,
 						{ headers }
 					);
 					const state = deploymentDetails.data.metadata.status;
 					console.log(`Current state: ${state}`);
 
-					if (i > 100) {
-						console.error("Timing out after ~500 seconds.");
+					if (i > timeout * 10) {
+						console.error(`Timing out after ${timeout} minutes.`);
 						core.setOutput(
 							"deployment_output",
-							"Deployment timed out after ~500 seconds."
+							`Timing out after ${timeout} minutes.`
 						);
-
-						keepGoing = false;
-						return;
+						throw new Error("Instance deployment timed out");
 					}
 
 					if (state.toUpperCase() === "DEPLOYED") {
@@ -64,11 +63,11 @@ const deploy = async () => {
 
 						keepGoing = false;
 						return;
+					} else if (state.toUpperCase() === "FAILED") {
+						throw new Error("Instance failed to deploy in ZRU");
 					}
 				} catch (e) {
-					console.log("Something went wrong...");
-					console.log(e);
-					throw new Error("Instance deployment failed while deploying");
+					throw new Error(`Instance deployment failed: ${e}`);
 				}
 
 				await sleep(10000);
