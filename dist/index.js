@@ -149,7 +149,7 @@ const deploy = async () => {
 					const state = deploymentDetails.data.metadata.status;
 					console.log(`Current state: ${state}`);
 
-					if (i > timeout * 10) {
+					if (i > timeout * 6) {
 						console.error(`Timing out after ${timeout} minutes.`);
 						core.setOutput(
 							"deployment_output",
