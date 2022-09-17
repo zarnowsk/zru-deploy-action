@@ -38,12 +38,18 @@ const deploy = async () => {
 				keepGoing = true;
 			while (keepGoing) {
 				try {
-					const deploymentDetails = await axios.get(
-						`${base_url}/details?instanceId=${instanceId}`,
-						{ headers }
-					);
-					const state = deploymentDetails.data.metadata.status;
-					console.log(`Current state: ${state}`);
+					try {
+						const deploymentDetails = await axios.get(
+							`${base_url}/details?instanceId=${instanceId}`,
+							{ headers }
+						);
+						const state = deploymentDetails.data.metadata.status;
+						console.log(`Current state: ${state}`);
+					} catch (error) {
+						console.error(
+							`Errir fetching details of deployment: ${error}. Retrying...`
+						);
+					}
 
 					if (i > timeout * 6) {
 						console.error(`Timing out after ${timeout} minutes.`);

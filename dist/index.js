@@ -1,7 +1,7 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 358:
+/***/ 637:
 /***/ ((module) => {
 
 module.exports = eval("require")("@actions/core");
@@ -9,7 +9,7 @@ module.exports = eval("require")("@actions/core");
 
 /***/ }),
 
-/***/ 78:
+/***/ 738:
 /***/ ((module) => {
 
 module.exports = eval("require")("axios");
@@ -100,10 +100,10 @@ var __webpack_exports__ = {};
 (() => {
 "use strict";
 __nccwpck_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(78);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(738);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
-const core = __nccwpck_require__(358);
+const core = __nccwpck_require__(637);
 
 const base_url = `${core.getInput("api_endpoint", {
 	required: false,
@@ -142,12 +142,18 @@ const deploy = async () => {
 				keepGoing = true;
 			while (keepGoing) {
 				try {
-					const deploymentDetails = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(
-						`${base_url}/details?instanceId=${instanceId}`,
-						{ headers }
-					);
-					const state = deploymentDetails.data.metadata.status;
-					console.log(`Current state: ${state}`);
+					try {
+						const deploymentDetails = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(
+							`${base_url}/details?instanceId=${instanceId}`,
+							{ headers }
+						);
+						const state = deploymentDetails.data.metadata.status;
+						console.log(`Current state: ${state}`);
+					} catch (error) {
+						console.error(
+							`Errir fetching details of deployment: ${error}. Retrying...`
+						);
+					}
 
 					if (i > timeout * 6) {
 						console.error(`Timing out after ${timeout} minutes.`);
