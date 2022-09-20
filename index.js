@@ -1,10 +1,7 @@
 import axios from "axios";
 const core = require("@actions/core");
 
-const base_url = `${core.getInput("api_endpoint", {
-	required: false,
-})}/builder/instance/api`;
-const timeout = core.getInput("timeout", { required: false });
+const base_url =  `${core.getInput("api_endpoint", { required: false })}/builder/instance/api`;
 const api_key = core.getInput("api_key", { required: true });
 const headers = {
 	Authorization: api_key,
@@ -26,9 +23,9 @@ const deploy = async () => {
 		});
 
 		if (instanceDeploy.status !== 200 && instanceDeploy.status !== 201) {
-			console.log("Something went wrong...");
-			console.log(instanceDeploy.data);
-			throw new Error("Instance deploy status not in 2xx");
+			console.error("Something went wrong...");
+			console.error(instanceDeploy.data);
+			return;
 		} else {
 			console.log("Started deployment...");
 			const instanceId = instanceDeploy.data.instance.id;
@@ -38,26 +35,22 @@ const deploy = async () => {
 				keepGoing = true;
 			while (keepGoing) {
 				try {
-					try {
-						const deploymentDetails = await axios.get(
-							`${base_url}/details?instanceId=${instanceId}`,
-							{ headers }
-						);
-						const state = deploymentDetails.data.metadata.status;
-						console.log(`Current state: ${state}`);
-					} catch (error) {
-						console.error(
-							`Errir fetching details of deployment: ${error}. Retrying...`
-						);
-					}
+					const deploymentDetails = await axios.get(
+						`${base_url}/details/?instanceId=${instanceId}`,
+						{ headers }
+					);
+					const state = deploymentDetails.data.metadata.status;
+					console.log(`Current state: ${state}`);
 
-					if (i > timeout * 6) {
-						console.error(`Timing out after ${timeout} minutes.`);
+					if (i > 100) {
+						console.error("Timing out after ~500 seconds.");
 						core.setOutput(
 							"deployment_output",
-							`Timing out after ${timeout} minutes.`
+							"Deployment timed out after ~500 seconds."
 						);
-						throw new Error("Instance deployment timed out");
+
+						keepGoing = false;
+						return;
 					}
 
 					if (state.toUpperCase() === "DEPLOYED") {
@@ -69,11 +62,9 @@ const deploy = async () => {
 
 						keepGoing = false;
 						return;
-					} else if (state.toUpperCase() === "FAILED") {
-						throw new Error("Instance failed to deploy in ZRU");
 					}
 				} catch (e) {
-					throw new Error(`Instance deployment failed: ${e}`);
+					console.error(e);
 				}
 
 				await sleep(10000);
@@ -81,10 +72,7 @@ const deploy = async () => {
 			}
 		}
 	} catch (e) {
-		core.error("Master failure");
-		console.log(e);
-
-		core.setFailed(`Deployment failed with error: ${e}`);
+		console.error(e);
 	}
 };
 
