@@ -2,20 +2,17 @@
 
 This action deploys an instance via the ZRU platform and prints the deployment output.
 
+
 ## Inputs
 
 ### `api_key`
-
 **Required** Authorization API key belonging to the Organization.
 
 ### `solution_id`
-
 **Required** ID of the Solution the Instance will be based on.
 
 ### `parameters`
-
 **Required** Deployment parameters. **Must** be written in the following format:
-
 ```
     parameters: >           <-- greater-than character to signify multiline input
         {                   <-- curly braces for JSON input
@@ -25,18 +22,14 @@ This action deploys an instance via the ZRU platform and prints the deployment o
 ```
 
 ### `api_endpoint`
-
 URL of the API. By default, Instances will be deployed to production environment.
 
-### `timeout`
-
-Time in minutes after which the deployment should fail.
 
 ## Outputs
 
 ### `deployment_output`
-
 The output from the deployment.
+
 
 ## Example usage
 
@@ -53,12 +46,14 @@ deploy-zru:
         solution_id: 1
         parameters: >
           {
-            "name": "actions-test-1",
+            "name": "actions-test-1", 
             "nextParam": "param-data"
           }
     - name: Log deployment output
       run: echo "Deployment output ${{ steps.zrudeploy.outputs.deployment_output }}"
 ```
+
+
 
 ## Contributing/development
 
