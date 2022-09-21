@@ -124,7 +124,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const deploy = async () => {
 	try {
-		// Create the instance in the platform first
+		// Create the instance in the platform  first
 		const instanceDeploy = await axios__WEBPACK_IMPORTED_MODULE_0___default().post(`${base_url}/deploy`, parameters, {
 			headers,
 		});
