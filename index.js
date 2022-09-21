@@ -20,7 +20,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const deploy = async () => {
 	try {
-		// Create the instance in the platform first
+		// Create the instance in the platform  first
 		const instanceDeploy = await axios.post(`${base_url}/deploy`, parameters, {
 			headers,
 		});
