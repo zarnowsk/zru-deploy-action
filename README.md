@@ -66,3 +66,5 @@ To add extra features or make changes, ensure you have a code complier installed
 Eg. `npm i -g @vercel/ncc`
 
 Once changes are ready to be deployed, run `npm run build` to compile the code and deploy to Github.
+
+_IMPORTANT: If you're adding a new dependency, run `npm install` before `npm run build`_

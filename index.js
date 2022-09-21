@@ -38,12 +38,13 @@ const deploy = async () => {
 				keepGoing = true;
 			while (keepGoing) {
 				try {
+					let state;
 					try {
 						const deploymentDetails = await axios.get(
 							`${base_url}/details?instanceId=${instanceId}`,
 							{ headers }
 						);
-						const state = deploymentDetails.data.metadata.status;
+						state = deploymentDetails.data.metadata.status;
 						console.log(`Current state: ${state}`);
 					} catch (error) {
 						console.error(
@@ -60,7 +61,7 @@ const deploy = async () => {
 						throw new Error("Instance deployment timed out");
 					}
 
-					if (state.toUpperCase() === "DEPLOYED") {
+					if (state && state.toUpperCase() === "DEPLOYED") {
 						console.log("Deployed successfully!");
 						core.setOutput(
 							"deployment_output",
@@ -69,11 +70,11 @@ const deploy = async () => {
 
 						keepGoing = false;
 						return;
-					} else if (state.toUpperCase() === "FAILED") {
+					} else if (state && state.toUpperCase() === "FAILED") {
 						throw new Error("Instance failed to deploy in ZRU");
 					}
 				} catch (e) {
-					console.error(e);
+					throw new Error(`Instance deployment failed: ${e}`);
 				}
 
 				await sleep(10000);
