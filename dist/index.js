@@ -4868,6 +4868,7 @@ const deploy = async () => {
 			while (keepGoing) {
 				try {
 					let state;
+					let deploymentOutput;
 					try {
 						const deploymentDetails = await axios__WEBPACK_IMPORTED_MODULE_0___default().get(
 							`${base_url}/details?instanceId=${instanceId}`,
@@ -4875,6 +4876,10 @@ const deploy = async () => {
 						);
 						state = deploymentDetails.data.metadata.status;
 						console.log(`Current state: ${state}`);
+
+						if (state && state.toUpperCase() === "DEPLOYED") {
+							deploymentOutput = deploymentDetails.data.metadata.output;
+						}
 					} catch (error) {
 						console.error(
 							`Error fetching details of deployment: ${error}. Retrying...`
@@ -4894,7 +4899,7 @@ const deploy = async () => {
 						console.log("Deployed successfully!");
 						core.setOutput(
 							"deployment_output",
-							JSON.stringify(deploymentDetails.data.metadata.output)
+							JSON.stringify(deploymentOutput)
 						);
 
 						keepGoing = false;
