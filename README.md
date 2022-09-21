@@ -65,4 +65,4 @@ deploy-zru:
 To add extra features or make changes, ensure you have a code complier installed.
 Eg. `npm i -g @vercel/ncc`
 
-Once changes are ready to be deployed, run `ncc build index.js -o dist` to compile the code and deploy to Github.
+Once changes are ready to be deployed, run `npm run build` to compile the code and deploy to Github.
