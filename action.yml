@@ -13,7 +13,7 @@ inputs:
   api_endpoint:
     description: "API URL"
     required: false
-    default: "https://api.zrutech.ca"
+    default: "https://api.zrutechapps.solarium.sh"
   timeout:
     description: "Time in minutes after which the deployment should fail"
     required: false
